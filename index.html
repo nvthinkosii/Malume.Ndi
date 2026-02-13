@@ -3,98 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine 💜</title>
+<title>Will You Be My Valentine Miss Powell?</title>
 <style>
 body {
- font-family: Arial, sans-serif;
- background: linear-gradient(135deg, #e6d9ff, #f3e8ff);
- color: #3a235e;
- text-align: center;
- min-height: 100vh;
- margin: 0;
- overflow: hidden;
-}
-.container {
- max-width: 500px;
- margin: auto;
- padding-top: 70px;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  background: #ffe6e6;
+  color: #333;
+  padding-top: 50px;
+  margin: 0;
 }
 h1 {
- font-size: 2.2em;
- margin-bottom: 60px;
+  font-size: 2.2em;
+  margin-bottom: 40px;
+  padding: 0 10px; /* small padding so text doesn't touch screen edges */
 }
-button {
- font-size: 1.4em;
- padding: 14px 28px;
- border: none;
- border-radius: 14px;
- cursor: pointer;
- position: absolute;
- transition: transform 0.3s ease;
+/* Button container for responsive layout */
+#buttons-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* allows buttons to wrap on small screens */
+  gap: 20px;
+  margin-top: 30px; /* space below h1 */
+  position: relative;
+}
+#buttons-container button {
+  font-size: 1.5em;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative; /* relative positioning for mobile responsiveness */
 }
 #yes {
- background-color: #7b5cff;
- color: white;
- left: 50%;
- top: 40%;
- transform: translate(-50%, -50%) scale(1);
+  background-color: #ff4d6d;
+  color: white;
 }
 #no {
- background-color: #c3b8ff;
- color: #3a235e;
- left: 50%;
- top: 55%;
- transform: translate(-50%, -50%);
+  background-color: #aaa;
+  color: white;
+}
+/* Optional: make buttons slightly smaller on very small screens */
+@media (max-width: 400px) {
+   #buttons-container button {
+       font-size: 1.2em;
+       padding: 12px 24px;
+   }
 }
 </style>
 </head>
 <body>
-<div class="container">
-<h1>💜 Simphiwe, my baby,<br>can you be my Valentine? ❤️</h1>
+<h1>❤️ Simphiwe my Baby, will you be my Valentine? ❤️</h1>
+<div id="buttons-container">
 <button id="yes">Yes ❤️</button>
-<button id="no">No 😅</button>
+<button id="no">No 🫠</button>
 </div>
-<!-- Confetti -->
+<!-- Load confetti library -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
-const yesBtn = document.getElementById("yes");
-const noBtn = document.getElementById("no");
-let yesScale = 1;
-let yesClickedOnce = false;
-/* NO button logic */
-noBtn.addEventListener("click", () => {
- yesScale += 0.4;
- const maxX = window.innerWidth - yesBtn.offsetWidth;
- const maxY = window.innerHeight - yesBtn.offsetHeight;
- const randomX = Math.random() * maxX;
- const randomY = Math.random() * maxY;
- yesBtn.style.left = randomX + "px";
- yesBtn.style.top = randomY + "px";
- yesBtn.style.transform = `scale(${yesScale})`;
+const yesBtn = document.getElementById('yes');
+const noBtn = document.getElementById('no');
+let noMessageShown = false; // show message only once
+let yesSize = 1; // initial scale
+// No button click
+noBtn.addEventListener('click', () => {
+   // Increase Yes button size
+   yesSize += 0.5;
+   // Move Yes button around relative to its original position
+   const xMove = Math.floor(Math.random() * 50 - 25); // -25 to +25px
+   const yMove = Math.floor(Math.random() * 50 - 25); // -25 to +25px
+   yesBtn.style.transform = `scale(${yesSize}) translate(${xMove}px, ${yMove}px)`;
+   // Wiggle No button
+   noBtn.style.transform = 'translateX(-10px)';
+   setTimeout(() => { noBtn.style.transform = 'translateX(10px)'; }, 100);
+   setTimeout(() => { noBtn.style.transform = 'translateX(0)'; }, 200);
+   // Show message only once
+   if (!noMessageShown) {
+       alert("😏 Click me multiple times for a surprise!");
+       noMessageShown = true;
+   }
 });
-/* YES button logic */
-yesBtn.addEventListener("click", () => {
- if (!yesClickedOnce) {
-   alert("😏 Click me again");
-   yesClickedOnce = true;
-   return;
- }
- alert("I knew you were going to say yes, musadzi wanga ❤️");
- const duration = 3500;
- const end = Date.now() + duration;
- (function frame() {
-   confetti({
-     particleCount: 18,
-     spread: 360,
-     startVelocity: 45,
-     origin: {
-       x: Math.random(),
-       y: Math.random() - 0.2
-     },
-     colors: ['#7b5cff', '#c3b8ff', '#ffffff']
-   });
-   if (Date.now() < end) requestAnimationFrame(frame);
- })();
+// Yes button click
+yesBtn.addEventListener('click', () => {
+   alert("I knew you would say YES! Musadzi Wanga!!! ❤️");
+   // Big confetti celebration
+   const duration = 3 * 1000; // 3 seconds
+   const animationEnd = Date.now() + duration;
+   const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+   const interval = setInterval(function() {
+       const timeLeft = animationEnd - Date.now();
+       if (timeLeft <= 0) {
+           return clearInterval(interval);
+       }
+       const particleCount = 50 * (timeLeft / duration);
+       confetti(Object.assign({}, defaults, {
+           particleCount,
+           origin: { x: Math.random(), y: Math.random() - 0.2 }
+       }));
+   }, 250);
 });
 </script>
 </body>
