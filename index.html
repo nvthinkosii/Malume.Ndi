@@ -26,7 +26,7 @@ body {
 }
 .heart {
  position: absolute;
- color: rgba(255, 255, 255, 0.6);
+ color: rgba(255,255,255,0.7);
  font-size: 20px;
  animation: floatUp 8s linear infinite;
 }
@@ -61,7 +61,7 @@ button {
  border: none;
  border-radius: 14px;
  cursor: pointer;
- transition: all 0.25s ease;
+ transition: all 0.3s ease;
  position: absolute;
 }
 #yes {
@@ -69,7 +69,8 @@ button {
  color: white;
  left: 50%;
  top: 40px;
- transform: translateX(-50%);
+ transform: translateX(-50%) scale(1);
+ z-index: 2;
 }
 #no {
  background-color: #c3b8ff;
@@ -77,11 +78,12 @@ button {
  left: 50%;
  top: 130px;
  transform: translateX(-50%);
+ z-index: 1;
 }
 </style>
 </head>
 <body>
-<!-- Hearts -->
+<!-- Hearts background -->
 <div class="hearts" id="hearts"></div>
 <div class="container">
 <h1>💜 Simphiwe 🥺, my Baby<br>can you be my Valentine? ❤️</h1>
@@ -93,7 +95,7 @@ button {
 <!-- Confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
-/* Create floating hearts */
+/* Floating hearts */
 const heartsContainer = document.getElementById("hearts");
 setInterval(() => {
  const heart = document.createElement("div");
@@ -105,38 +107,35 @@ setInterval(() => {
  heartsContainer.appendChild(heart);
  setTimeout(() => heart.remove(), 8000);
 }, 300);
-/* Buttons logic */
+/* Button logic */
 const yesBtn = document.getElementById("yes");
 const noBtn = document.getElementById("no");
 let yesScale = 1;
 let hintShown = false;
-/* Dodging No button */
-noBtn.addEventListener("mouseenter", () => {
- const maxX = window.innerWidth - noBtn.offsetWidth;
- const maxY = window.innerHeight - noBtn.offsetHeight;
- noBtn.style.left = Math.random() * maxX + "px";
- noBtn.style.top = Math.random() * maxY + "px";
- yesScale += 0.15;
- yesBtn.style.transform = `translateX(-50%) scale(${yesScale})`;
-});
-/* One-time hint on click */
+/* NO button behaviour */
 noBtn.addEventListener("click", () => {
  if (!hintShown) {
-   noBtn.innerText = "Try again 😏";
+   noBtn.innerText = "Click me again 😏";
    hintShown = true;
+   return;
  }
+ yesScale += 0.35;
+ yesBtn.style.transform = `translateX(-50%) scale(${yesScale})`;
 });
-/* YES celebration */
+/* YES button */
 yesBtn.addEventListener("click", () => {
  alert("I knew you were going to say yes, musadzi wanga ❤️");
  const duration = 4000;
  const end = Date.now() + duration;
  (function frame() {
    confetti({
-     particleCount: 15,
+     particleCount: 18,
      spread: 360,
      startVelocity: 45,
-     origin: { x: Math.random(), y: Math.random() - 0.2 },
+     origin: {
+       x: Math.random(),
+       y: Math.random() - 0.2
+     },
      colors: ['#7b5cff', '#c3b8ff', '#ffffff']
    });
    if (Date.now() < end) requestAnimationFrame(frame);
