@@ -12,43 +12,16 @@ body {
  text-align: center;
  min-height: 100vh;
  margin: 0;
+ padding: 20px;
  overflow: hidden;
 }
-/* Floating hearts background */
-.hearts {
- position: fixed;
- top: 0;
- left: 0;
- width: 100%;
- height: 100%;
- pointer-events: none;
- z-index: 0;
-}
-.heart {
- position: absolute;
- color: rgba(255,255,255,0.7);
- font-size: 20px;
- animation: floatUp 8s linear infinite;
-}
-@keyframes floatUp {
- from {
-   transform: translateY(100vh) scale(0.8);
-   opacity: 1;
- }
- to {
-   transform: translateY(-10vh) scale(1.4);
-   opacity: 0;
- }
-}
 .container {
- position: relative;
- z-index: 1;
  max-width: 500px;
  margin: auto;
- padding-top: 70px;
+ padding-top: 60px;
 }
 h1 {
- font-size: 2.1em;
+ font-size: 2.2em;
  margin-bottom: 60px;
 }
 .buttons {
@@ -69,8 +42,7 @@ button {
  color: white;
  left: 50%;
  top: 40px;
- transform: translateX(-50%) scale(1);
- z-index: 2;
+ transform: translateX(-50%);
 }
 #no {
  background-color: #c3b8ff;
@@ -78,13 +50,10 @@ button {
  left: 50%;
  top: 130px;
  transform: translateX(-50%);
- z-index: 1;
 }
 </style>
 </head>
 <body>
-<!-- Hearts background -->
-<div class="hearts" id="hearts"></div>
 <div class="container">
 <h1>💜 Simphiwe 🥺, my Baby<br>can you be my Valentine? ❤️</h1>
 <div class="buttons">
@@ -95,41 +64,30 @@ button {
 <!-- Confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
-/* Floating hearts */
-const heartsContainer = document.getElementById("hearts");
-setInterval(() => {
- const heart = document.createElement("div");
- heart.className = "heart";
- heart.innerHTML = "❤️";
- heart.style.left = Math.random() * 100 + "vw";
- heart.style.fontSize = (Math.random() * 20 + 15) + "px";
- heart.style.animationDuration = (Math.random() * 3 + 6) + "s";
- heartsContainer.appendChild(heart);
- setTimeout(() => heart.remove(), 8000);
-}, 300);
-/* Button logic */
 const yesBtn = document.getElementById("yes");
 const noBtn = document.getElementById("no");
 let yesScale = 1;
 let hintShown = false;
-/* NO button behaviour */
 noBtn.addEventListener("click", () => {
  if (!hintShown) {
-   noBtn.innerText = "Click me again 😏";
+   noBtn.innerText = "Click me a few times 😏";
    hintShown = true;
    return;
  }
- yesScale += 0.35;
+ yesScale += 0.4;
  yesBtn.style.transform = `translateX(-50%) scale(${yesScale})`;
+ const maxX = window.innerWidth - yesBtn.offsetWidth;
+ const maxY = window.innerHeight - yesBtn.offsetHeight;
+ yesBtn.style.left = Math.random() * maxX + "px";
+ yesBtn.style.top = Math.random() * maxY + "px";
 });
-/* YES button */
 yesBtn.addEventListener("click", () => {
  alert("I knew you were going to say yes, musadzi wanga ❤️");
- const duration = 4000;
+ const duration = 3500;
  const end = Date.now() + duration;
  (function frame() {
    confetti({
-     particleCount: 18,
+     particleCount: 12,
      spread: 360,
      startVelocity: 45,
      origin: {
@@ -138,7 +96,9 @@ yesBtn.addEventListener("click", () => {
      },
      colors: ['#7b5cff', '#c3b8ff', '#ffffff']
    });
-   if (Date.now() < end) requestAnimationFrame(frame);
+   if (Date.now() < end) {
+     requestAnimationFrame(frame);
+   }
  })();
 });
 </script>
