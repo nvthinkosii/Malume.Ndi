@@ -12,21 +12,16 @@ body {
  text-align: center;
  min-height: 100vh;
  margin: 0;
- padding: 20px;
  overflow: hidden;
 }
 .container {
  max-width: 500px;
  margin: auto;
- padding-top: 60px;
+ padding-top: 70px;
 }
 h1 {
  font-size: 2.2em;
  margin-bottom: 60px;
-}
-.buttons {
- position: relative;
- height: 300px;
 }
 button {
  font-size: 1.4em;
@@ -34,32 +29,30 @@ button {
  border: none;
  border-radius: 14px;
  cursor: pointer;
- transition: all 0.3s ease;
  position: absolute;
+ transition: transform 0.3s ease;
 }
 #yes {
  background-color: #7b5cff;
  color: white;
  left: 50%;
- top: 40px;
- transform: translateX(-50%);
+ top: 40%;
+ transform: translate(-50%, -50%) scale(1);
 }
 #no {
  background-color: #c3b8ff;
  color: #3a235e;
  left: 50%;
- top: 130px;
- transform: translateX(-50%);
+ top: 55%;
+ transform: translate(-50%, -50%);
 }
 </style>
 </head>
 <body>
 <div class="container">
-<h1>💜 Simphiwe 🥺, my Baby<br>can you be my Valentine? ❤️</h1>
-<div class="buttons">
-<button id="yes">Yes 💖</button>
+<h1>💜 Simphiwe, my baby,<br>can you be my Valentine? ❤️</h1>
+<button id="yes">Yes ❤️</button>
 <button id="no">No 😅</button>
-</div>
 </div>
 <!-- Confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -67,27 +60,31 @@ button {
 const yesBtn = document.getElementById("yes");
 const noBtn = document.getElementById("no");
 let yesScale = 1;
-let hintShown = false;
+let yesClickedOnce = false;
+/* NO button logic */
 noBtn.addEventListener("click", () => {
- if (!hintShown) {
-   noBtn.innerText = "Click me a few times 😏";
-   hintShown = true;
-   return;
- }
  yesScale += 0.4;
- yesBtn.style.transform = `translateX(-50%) scale(${yesScale})`;
  const maxX = window.innerWidth - yesBtn.offsetWidth;
  const maxY = window.innerHeight - yesBtn.offsetHeight;
- yesBtn.style.left = Math.random() * maxX + "px";
- yesBtn.style.top = Math.random() * maxY + "px";
+ const randomX = Math.random() * maxX;
+ const randomY = Math.random() * maxY;
+ yesBtn.style.left = randomX + "px";
+ yesBtn.style.top = randomY + "px";
+ yesBtn.style.transform = `scale(${yesScale})`;
 });
+/* YES button logic */
 yesBtn.addEventListener("click", () => {
+ if (!yesClickedOnce) {
+   alert("😏 Click me again");
+   yesClickedOnce = true;
+   return;
+ }
  alert("I knew you were going to say yes, musadzi wanga ❤️");
  const duration = 3500;
  const end = Date.now() + duration;
  (function frame() {
    confetti({
-     particleCount: 12,
+     particleCount: 18,
      spread: 360,
      startVelocity: 45,
      origin: {
@@ -96,9 +93,7 @@ yesBtn.addEventListener("click", () => {
      },
      colors: ['#7b5cff', '#c3b8ff', '#ffffff']
    });
-   if (Date.now() < end) {
-     requestAnimationFrame(frame);
-   }
+   if (Date.now() < end) requestAnimationFrame(frame);
  })();
 });
 </script>
